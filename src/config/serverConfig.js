@@ -1,5 +1,6 @@
-require('dotenv').config();  // Load environment variables
+require('dotenv').config();  // ✅ Load environment variables once
 
 module.exports = {
-    PORT: process.env.PORT || 3000,  // Default to 3000 if not set
+    PORT: process.env.PORT || 3000, 
+    DB_URL: process.env.DB_URL || 'mongodb://localhost:27017/express-mongo',
 };
