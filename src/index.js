@@ -1,16 +1,16 @@
 const express = require('express');
-require('dotenv').config();  // Load environment variables
-
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const serverConfig = require('./config/serverConfig'); 
 const connectToDB = require('./config/dbconfig'); 
 const userRouter = require('./routes/userRoute');
 const cartRouter = require('./routes/cartRoute');
 const authRouter = require('./routes/authRoute');
+const { isLoggedIn } = require('./authValidator');
 
 
 const app = express();
-
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
@@ -22,6 +22,21 @@ app.use('/carts',cartRouter);
 app.use('/auth',authRouter);
 
 const PORT = serverConfig.PORT;
+
+app.get('/ping',isLoggedIn, (req, res) => {
+    console.log(req.body);
+    console.log(req.cookies);
+    console.log(req.user);
+
+    return res.json({
+        message: "Pong",
+        success: true,
+        data: {},
+        error: {}
+    })
+
+})
+
 
 async function startServer() {
     await connectToDB(); //  Ensure DB connection is established before using models
