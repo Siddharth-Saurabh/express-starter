@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');  
-
+const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -38,6 +38,13 @@ const userSchema = new mongoose.Schema({
         maxlength: [20, "Password must be at most 20 characters"],       
     }
 }, { timestamps: true });
+
+userSchema.pre('save',async function(){
+    console.log("Pre save hook called");
+    const hasedPassword = await bcrypt.hash(this.password, 10);
+    this.password = hasedPassword;
+    console.log(this);
+})
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

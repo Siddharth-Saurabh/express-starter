@@ -6,6 +6,7 @@ const serverConfig = require('./config/serverConfig');
 const connectToDB = require('./config/dbconfig'); 
 const userRouter = require('./routes/userRoute');
 const cartRouter = require('./routes/cartRoute');
+const authRouter = require('./routes/authRoute');
 
 
 const app = express();
@@ -17,6 +18,8 @@ app.use(bodyParser.text());
 app.use('/users',userRouter);
 
 app.use('/carts',cartRouter);
+
+app.use('/auth',authRouter);
 
 const PORT = serverConfig.PORT;
 
