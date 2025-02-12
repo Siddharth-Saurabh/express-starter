@@ -6,6 +6,7 @@ const connectToDB = require('./config/dbconfig');
 const userRouter = require('./routes/userRoute');
 const cartRouter = require('./routes/cartRoute');
 const authRouter = require('./routes/authRoute');
+const productRouter = require('./routes/productRouter')
 const { isLoggedIn } = require('./authValidator');
 const uploader = require('./middleware/multerMiddleware');
 const cloudinary = require('./config/clodinaryConfig')
@@ -23,6 +24,8 @@ app.use('/carts',cartRouter);
 
 app.use('/auth',authRouter);
 
+app.use('/products',productRouter)    
+
 const PORT = serverConfig.PORT;
 
 app.get('/ping',isLoggedIn, (req, res) => {
@@ -38,17 +41,7 @@ app.get('/ping',isLoggedIn, (req, res) => {
     })
 
 })
-app.post('/photo',uploader.single('incomingFile'),async(req,res)=>{
-    
 
-    const reasult = await cloudinary.uploader.upload(req.file.path);
-    console.log(reasult);
-    await fs.unlink(req.file.path);
-    return res.json({
-        message:'ok'
-    })
-}
-);
 
 
 async function startServer() {
